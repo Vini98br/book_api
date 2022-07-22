@@ -1,0 +1,44 @@
+version: '3.8'
+
+networks:
+  opensessame-network:
+    driver: bridge
+
+services:
+  db:
+    image: mysql:8.0.28
+    container_name: opensessame_db
+    command: --default-authentication-plugin=mysql_native_password
+    restart: unless-stopped
+    env_file: 
+      - .env.prod
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=${TYPEORM_USERNAME}
+      - MYSQL_PASSWORD=${TYPEORM_PASSWORD}
+      - MYSQL_DATABASE=${TYPEORM_DATABASE}
+    ports:
+      - ${TYPEORM_PORT}:${TYPEORM_PORT}
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      - opensessame-network
+
+  api:
+    container_name: opensessame_api
+    command: sh -c "yarn migration:run && yarn start"
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    restart: unless-stopped
+    env_file: 
+      - .env.prod
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - db
+    networks:
+      - opensessame-network
+
+volumes: 
+  db:

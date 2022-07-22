@@ -1,0 +1,74 @@
+###############VARIABLES##############
+@hostname = localhost
+@port = 3000
+@host = {{hostname}}:{{port}}
+
+###############BOOKS#################
+
+### Get all Books
+GET http://{{host}}/book HTTP/1.1
+content-type: application/json
+
+### Get one book
+GET http://{{host}}/book/2 HTTP/1.1
+content-type: application/json
+
+### Create a book
+POST http://{{host}}/book/ HTTP/1.1
+content-type: application/json
+
+{
+  "title": "Clean Code 3",
+  "isbn": "9788550811482",
+  "authorId": 1,
+  "pages": 456,
+  "language": "English"
+}
+
+### Update a book
+PATCH  http://{{host}}/book/1 HTTP/1.1
+content-type: application/json
+
+{
+  "title": "Clean Architecture"
+}
+
+### Delete a book
+DELETE http://{{host}}/book/1 HTTP/1.1
+content-type: application/json
+
+###############Authors#################
+
+### Get All Authors
+GET http://{{host}}/author HTTP/1.1
+content-type: application/json
+
+###
+
+GET http://{{host}}/author/1 HTTP/1.1
+content-type: application/json
+
+###
+
+POST http://{{host}}/author HTTP/1.1
+content-type: application/json
+
+{
+  "firstName": "Robert",
+  "lastName": "C. Martin",
+  "birthDate": "01/01/1950",
+  "country": "USA"
+}
+
+###
+
+PATCH http://{{host}}/author/1 HTTP/1.1
+content-type: application/json
+
+{
+  "lastName": "Martin"
+}
+
+###
+DELETE http://{{host}}/author/1 HTTP/1.1
+content-type: application/json
